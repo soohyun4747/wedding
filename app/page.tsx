@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Gallery from '@/app/components/Gallery';
+import NaverMap from '@/app/components/NaverMap';
 
 export default function Home() {
 	const [showContent, setShowContent] = useState(false);
@@ -36,8 +37,9 @@ export default function Home() {
 		},
 	];
 
-	const naverMapLink =
-		'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
+        const naverMapLink =
+                'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
+        const naverClientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '';
 
 	const weddingDate = new Date('2026-03-02T12:30:00');
 
@@ -266,22 +268,15 @@ export default function Home() {
 						오시는 길
 					</h2>
 
-					<div className='bg-gray-200 rounded-2xl h-64 mb-6 overflow-hidden'>
-						<iframe
-							title='네이버 지도'
-							src='https://map.naver.com/v5/entry/place/11609482?c=14129783.1012107,4517407.3607136,15,0,0,0,dh&placePath=%2Fhome'
-							className='w-full h-full border-0'
-							allowFullScreen></iframe>
-					</div>
+                                        <NaverMap
+                                                clientId={naverClientId}
+                                                address='서울 서초구 반포대로 235'
+                                                placeName='아펠가모 반포'
+                                                mapLink={naverMapLink}
+                                        />
 
-					<button
-						onClick={() => window.open(naverMapLink, '_blank')}
-						className='w-full py-4 bg-gray-800 text-white rounded-xl mb-6 hover:bg-gray-700 transition-colors'>
-						네이버 지도에서 길찾기
-					</button>
-
-					<div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
-						<div>
+                                        <div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
+                                                <div>
 							<p className='font-medium text-gray-800 mb-2 flex items-center gap-2'>
 								🚇 대중교통
 							</p>

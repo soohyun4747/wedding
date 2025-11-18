@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment variables
+
+To enable the interactive Naver Map on the invitation page, set the following environment variable before running the app:
+
+- `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID`: Naver Cloud Platform Map client ID.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
