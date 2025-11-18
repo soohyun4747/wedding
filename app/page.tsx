@@ -5,23 +5,41 @@ import Image from 'next/image';
 import Gallery from '@/app/components/Gallery';
 
 export default function Home() {
-        const [showContent, setShowContent] = useState(false);
-        const [daysLeft, setDaysLeft] = useState(0);
-        const [isPlaying, setIsPlaying] = useState(false);
+	const [showContent, setShowContent] = useState(false);
+	const [daysLeft, setDaysLeft] = useState(0);
+	const [isPlaying, setIsPlaying] = useState(false);
 
-        const accounts = [
-                { role: '신랑', name: '최광은', bank: '우리은행', number: '1002-134-567890' },
-                { role: '신랑 혼주', name: '최명섭', bank: '농협', number: '352-1234-5678-90' },
-                { role: '신랑 혼주', name: '김은실', bank: '국민은행', number: '723701-04-123456' },
-                { role: '신부', name: '정수현', bank: '신한은행', number: '110-234-567890' },
-                { role: '신부 혼주', name: '정외영', bank: '기업은행', number: '010-123456-01-789' },
-                { role: '신부 혼주', name: '송미연', bank: '하나은행', number: '356-1234-5678-90' },
-        ];
+	const accounts = [
+		{
+			role: '신랑 혼주',
+			name: '최명섭',
+			bank: '농협',
+			number: '743802-01-000416',
+		},
+		{
+			role: '신랑',
+			name: '최광은',
+			bank: '우리은행',
+			number: '940302-00-470325',
+		},
+		{
+			role: '신부 혼주',
+			name: '정외영',
+			bank: '우리은행',
+			number: '424-08-166007',
+		},
+		{
+			role: '신부',
+			name: '정수현',
+			bank: '우리은행',
+			number: '1002-356-005148',
+		},
+	];
 
-        const naverMapLink =
-                'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
+	const naverMapLink =
+		'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
 
-        const weddingDate = new Date('2026-03-02T12:30:00');
+	const weddingDate = new Date('2026-03-02T12:30:00');
 
 	useEffect(() => {
 		setTimeout(() => setShowContent(true), 100);
@@ -36,37 +54,37 @@ export default function Home() {
 		calculateDays();
 	}, []);
 
-        const handleCopy = async (number: string) => {
-                try {
-                        await navigator.clipboard.writeText(number);
-                        alert('계좌번호가 복사되었습니다.');
-                } catch (err) {
-                        console.error('Copy failed', err);
-                        alert('복사에 실패했어요. 다시 시도해주세요.');
-                }
-        };
+	const handleCopy = async (number: string) => {
+		try {
+			await navigator.clipboard.writeText(number);
+			alert('계좌번호가 복사되었습니다.');
+		} catch (err) {
+			console.error('Copy failed', err);
+			alert('복사에 실패했어요. 다시 시도해주세요.');
+		}
+	};
 
-        return (
-                <div className='min-h-screen bg-gray-50'>
-                        {/* 커버 이미지 */}
-                        <div className='relative h-screen flex items-end justify-center overflow-hidden pb-16'>
-                                <Image
-                                        src='/images/IMG_3485.jpg'
-                                        alt='Wedding Cover'
-                                        fill
+	return (
+		<div className='min-h-screen bg-gray-50'>
+			{/* 커버 이미지 */}
+			<div className='relative h-screen flex justify-center overflow-hidden pb-16'>
+				<Image
+					src='/images/IMG_3485.jpg'
+					alt='Wedding Cover'
+					fill
 					className='object-cover'
 					priority
 				/>
 				<div className='absolute inset-0 bg-black bg-opacity-20'></div>
-                                <div
-                                        className={`relative z-10 text-center transition-all duration-1000 ${
-                                                showContent
-                                                        ? 'opacity-100 translate-y-0'
-                                                        : 'opacity-0 translate-y-6'
-                                        }`}>
-                                        <p className='text-sm tracking-[0.3em] text-white mb-4 drop-shadow-lg'>
-                                                WEDDING INVITATION
-                                        </p>
+				<div
+					className={`relative z-10 text-center transition-all duration-1000 ${
+						showContent
+							? 'opacity-100 translate-y-16'
+							: 'opacity-0 translate-y-24'
+					}`}>
+					<p className='text-sm tracking-[0.3em] text-white mb-4 drop-shadow-lg'>
+						WEDDING INVITATION
+					</p>
 					<div className='space-y-2'>
 						<h1 className='text-4xl font-serif text-white drop-shadow-lg'>
 							광은 <span className='text-2xl mx-2'>&</span> 수현
@@ -78,9 +96,9 @@ export default function Home() {
 						</p>
 						<p className='text-white drop-shadow-lg'>PM 12:30</p>
 					</div>
-                                        <div className='mt-12'>
-                                                <div className='w-px h-12 bg-white mx-auto animate-bounce opacity-70'></div>
-                                        </div>
+					<div className='mt-12'>
+						<div className='w-px h-12 bg-white mx-auto animate-bounce opacity-70'></div>
+					</div>
 				</div>
 			</div>
 
@@ -147,9 +165,9 @@ export default function Home() {
 				</div>
 			</div>
 
-                        {/* 예식 정보 */}
-                        <div className='px-6 py-16 bg-gray-50'>
-                                <div className='max-w-md mx-auto'>
+			{/* 예식 정보 */}
+			<div className='px-6 py-16 bg-gray-50'>
+				<div className='max-w-md mx-auto'>
 					<h2 className='text-2xl font-serif text-center mb-8 text-gray-800'>
 						예식 안내
 					</h2>
@@ -183,50 +201,50 @@ export default function Home() {
 								<p className='text-gray-800 font-medium'>
 									아펠가모 반포 LL층
 								</p>
-                                                                <p className='text-sm text-gray-500 mt-1'>
-                                                                        서울 서초구 반포대로 235
-                                                                </p>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                </div>
-                        </div>
+								<p className='text-sm text-gray-500 mt-1'>
+									서울 서초구 반포대로 235
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-                        {/* 마음 전하실 곳 */}
-                        <div className='px-6 py-16 bg-white'>
-                                <div className='max-w-md mx-auto'>
-                                        <h2 className='text-2xl font-serif text-center mb-4 text-gray-800'>
-                                                마음 전하실 곳
-                                        </h2>
-                                        <p className='text-center text-sm text-gray-500 mb-8'>
-                                                혼주와 신랑·신부의 계좌번호를 복사하실 수 있습니다.
-                                        </p>
-                                        <div className='space-y-3'>
-                                                {accounts.map((account, index) => (
-                                                        <div
-                                                                key={`${account.name}-${index}`}
-                                                                className='flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 shadow-sm'
-                                                        >
-                                                                <div>
-                                                                        <p className='text-xs text-gray-500'>{account.role}</p>
-                                                                        <p className='text-sm font-medium text-gray-800'>
-                                                                                {account.name}
-                                                                        </p>
-                                                                        <p className='text-xs text-gray-600'>
-                                                                                {account.bank} {account.number}
-                                                                        </p>
-                                                                </div>
-                                                                <button
-                                                                        onClick={() => handleCopy(account.number)}
-                                                                        className='text-sm text-gray-800 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors'
-                                                                >
-                                                                        복사하기
-                                                                </button>
-                                                        </div>
-                                                ))}
-                                        </div>
-                                </div>
-                        </div>
+			{/* 마음 전하실 곳 */}
+			<div className='px-6 py-16 bg-white'>
+				<div className='max-w-md mx-auto'>
+					<h2 className='text-2xl font-serif text-center mb-4 text-gray-800'>
+						마음 전하실 곳
+					</h2>
+					<p className='text-center text-sm text-gray-500 mb-8'>
+						혼주와 신랑·신부의 계좌번호를 복사하실 수 있습니다.
+					</p>
+					<div className='space-y-3'>
+						{accounts.map((account, index) => (
+							<div
+								key={`${account.name}-${index}`}
+								className='flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3 shadow-sm'>
+								<div>
+									<p className='text-xs text-gray-500'>
+										{account.role}
+									</p>
+									<p className='text-sm font-medium text-gray-800'>
+										{account.name}
+									</p>
+									<p className='text-xs text-gray-600'>
+										{account.bank} {account.number}
+									</p>
+								</div>
+								<button
+									onClick={() => handleCopy(account.number)}
+									className='text-sm text-gray-800 bg-white border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors'>
+									복사하기
+								</button>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
 
 			{/* 갤러리 */}
 			<div className='px-6 py-16 bg-white'>
@@ -248,21 +266,19 @@ export default function Home() {
 						오시는 길
 					</h2>
 
-                                        <div className='bg-gray-200 rounded-2xl h-64 mb-6 overflow-hidden'>
-                                                <iframe
-                                                        title='네이버 지도'
-                                                        src='https://map.naver.com/v5/entry/place/11609482?c=14129783.1012107,4517407.3607136,15,0,0,0,dh&placePath=%2Fhome'
-                                                        className='w-full h-full border-0'
-                                                        allowFullScreen
-                                                ></iframe>
-                                        </div>
+					<div className='bg-gray-200 rounded-2xl h-64 mb-6 overflow-hidden'>
+						<iframe
+							title='네이버 지도'
+							src='https://map.naver.com/v5/entry/place/11609482?c=14129783.1012107,4517407.3607136,15,0,0,0,dh&placePath=%2Fhome'
+							className='w-full h-full border-0'
+							allowFullScreen></iframe>
+					</div>
 
-                                        <button
-                                                onClick={() => window.open(naverMapLink, '_blank')}
-                                                className='w-full py-4 bg-gray-800 text-white rounded-xl mb-6 hover:bg-gray-700 transition-colors'
-                                        >
-                                                네이버 지도에서 길찾기
-                                        </button>
+					<button
+						onClick={() => window.open(naverMapLink, '_blank')}
+						className='w-full py-4 bg-gray-800 text-white rounded-xl mb-6 hover:bg-gray-700 transition-colors'>
+						네이버 지도에서 길찾기
+					</button>
 
 					<div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
 						<div>
@@ -293,27 +309,14 @@ export default function Home() {
 				</div>
 			</div>
 
-			{/* 방명록 */}
-			{/* <div className="px-6 py-16 bg-white">
-        <div className="max-w-md mx-auto">
-          <h2 className="text-2xl font-serif text-center mb-8 text-gray-800">방명록</h2>
-          <GuestBook />
-        </div>
-      </div> */}
-
 			{/* 푸터 */}
 			<div className='px-6 py-16 bg-gray-800 text-white text-center'>
 				<div className='max-w-md mx-auto space-y-4'>
 					<p className='text-sm'>THANK YOU</p>
 					<div className='text-3xl'>💐</div>
 					<div className='space-y-1'>
-						<p className='text-lg'>영민 & 지은</p>
-						<p className='text-sm text-gray-400'>2025. 12. 20</p>
-					</div>
-					<div className='pt-8 border-t border-gray-700 text-xs text-gray-500'>
-						<p>
-							이 청첩장은 환경을 생각하는 마음으로 제작되었습니다
-						</p>
+						<p className='text-lg'>광은 & 수현</p>
+						<p className='text-sm text-gray-400'>2026. 3. 2</p>
 					</div>
 				</div>
 			</div>
