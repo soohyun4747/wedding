@@ -9,8 +9,9 @@ interface Photo {
 }
 
 export default function Gallery() {
-  const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-  
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
   const photos: Photo[] = [
     { src: '/images/IMG_3493.jpg', caption: '예배당에서' },
     { src: '/images/IMG_3489.jpg', caption: '운동장에서' },
@@ -38,7 +39,7 @@ export default function Gallery() {
         {photos.map((photo, idx) => (
           <div 
             key={idx}
-            onClick={() => setSelectedImage(photo)}
+            onClick={() => setSelectedIndex(idx)}
             className="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition-opacity relative"
           >
             <Image 
@@ -53,33 +54,68 @@ export default function Gallery() {
       </div>
 
       {/* 라이트박스 */}
-      {selectedImage && (
-        <div 
+      {selectedIndex !== null && (
+        <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
+          onClick={() => setSelectedIndex(null)}
         >
-          <div className="relative max-w-lg w-full">
-            <button 
-              onClick={() => setSelectedImage(null)}
+          <div
+            className="relative max-w-3xl w-full"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              if (touchStartX === null) return;
+              const deltaX = e.changedTouches[0].clientX - touchStartX;
+              if (deltaX > 50) {
+                setSelectedIndex((prev) =>
+                  prev === null ? prev : (prev - 1 + photos.length) % photos.length,
+                );
+              } else if (deltaX < -50) {
+                setSelectedIndex((prev) =>
+                  prev === null ? prev : (prev + 1) % photos.length,
+                );
+              }
+              setTouchStartX(null);
+            }}
+          >
+            <button
+              onClick={() => setSelectedIndex(null)}
               className="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300"
             >
               ✕
             </button>
-            <div className="bg-white rounded-2xl overflow-hidden">
+            <div className="bg-white rounded-2xl overflow-hidden relative">
               <div className="relative aspect-square">
-                <Image 
-                  src={selectedImage.src}
-                  alt={selectedImage.caption}
+                <Image
+                  src={photos[selectedIndex].src}
+                  alt={photos[selectedIndex].caption}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 500px"
+                  sizes="(max-width: 768px) 100vw, 700px"
                 />
               </div>
-              <div className="p-6 text-center">
-                <p className="text-lg font-medium text-gray-800">
-                  {selectedImage.caption}
-                </p>
-              </div>
+              <button
+                className="absolute inset-y-0 left-0 px-4 text-white text-3xl flex items-center justify-center hover:text-gray-300"
+                onClick={() =>
+                  setSelectedIndex((prev) =>
+                    prev === null ? prev : (prev - 1 + photos.length) % photos.length,
+                  )
+                }
+                aria-label="Previous image"
+              >
+                ‹
+              </button>
+              <button
+                className="absolute inset-y-0 right-0 px-4 text-white text-3xl flex items-center justify-center hover:text-gray-300"
+                onClick={() =>
+                  setSelectedIndex((prev) =>
+                    prev === null ? prev : (prev + 1) % photos.length,
+                  )
+                }
+                aria-label="Next image"
+              >
+                ›
+              </button>
             </div>
           </div>
         </div>
