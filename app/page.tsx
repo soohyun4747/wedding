@@ -1,41 +1,75 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Gallery from '@/app/components/Gallery';
 import NaverMap from '@/app/components/NaverMap';
 
+const accounts = [
+	{
+		role: '신랑 혼주',
+		name: '최명섭',
+		bank: '농협',
+		number: '743802-01-000416',
+	},
+	{
+		role: '신랑',
+		name: '최광은',
+		bank: '우리은행',
+		number: '940302-00-470325',
+	},
+	{
+		role: '신부 혼주',
+		name: '정외영',
+		bank: '우리은행',
+		number: '424-08-166007',
+	},
+	{
+		role: '신부',
+		name: '정수현',
+		bank: '우리은행',
+		number: '1002-356-005148',
+	},
+];
+
 export default function Home() {
 	const [showContent, setShowContent] = useState(false);
 	const [daysLeft, setDaysLeft] = useState(0);
-	const [isPlaying, setIsPlaying] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(true);
 
-	const accounts = [
-		{
-			role: '신랑 혼주',
-			name: '최명섭',
-			bank: '농협',
-			number: '743802-01-000416',
-		},
-		{
-			role: '신랑',
-			name: '최광은',
-			bank: '우리은행',
-			number: '940302-00-470325',
-		},
-		{
-			role: '신부 혼주',
-			name: '정외영',
-			bank: '우리은행',
-			number: '424-08-166007',
-		},
-		{
-			role: '신부',
-			name: '정수현',
-			bank: '우리은행',
-			number: '1002-356-005148',
-		},
-	];
+	const audioRef = useRef<HTMLAudioElement | null>(null);
+
+	// 🔊 배경 음악 준비 (public/music/wedding-song.mp3 기준)
+	useEffect(() => {
+		// Next.js에서 브라우저 환경 체크
+		if (typeof window === 'undefined') return;
+
+		const audio = new Audio('/music/wedding.mp3');
+		audio.loop = true; // 계속 반복 재생
+		audioRef.current = audio;
+
+		// 🔊 자동 재생 시도
+		const tryPlay = async () => {
+			try {
+				await audio.play();
+				setIsPlaying(true);
+			} catch (e) {
+        console.log(e);
+        
+				console.warn(
+					'자동 재생이 제한되었어요. 사용자 인터랙션 후 재생됩니다.'
+				);
+				setIsPlaying(false);
+			}
+		};
+
+		tryPlay();
+
+		return () => {
+			audio.pause();
+			audioRef.current = null;
+		};
+	}, []);
 
 	const naverMapLink =
 		'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
@@ -55,6 +89,23 @@ export default function Home() {
 
 		calculateDays();
 	}, []);
+
+	const handleToggleMusic = async () => {
+		if (!audioRef.current) return;
+
+		try {
+			if (isPlaying) {
+				audioRef.current.pause();
+				setIsPlaying(false);
+			} else {
+				await audioRef.current.play();
+				setIsPlaying(true);
+			}
+		} catch (e) {
+			console.error('음악 재생 실패:', e);
+			alert('음악을 재생할 수 없습니다. 다시 시도해주세요.');
+		}
+	};
 
 	const handleCopy = async (number: string) => {
 		try {
@@ -319,7 +370,7 @@ export default function Home() {
 			{/* 플로팅 버튼 */}
 			<div className='fixed bottom-6 right-6 z-50 flex flex-col gap-3'>
 				<button
-					onClick={() => setIsPlaying(!isPlaying)}
+					onClick={handleToggleMusic}
 					className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
 					{isPlaying ? '🔇' : '🎵'}
 				</button>
