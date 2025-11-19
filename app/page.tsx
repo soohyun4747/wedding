@@ -37,9 +37,9 @@ export default function Home() {
 		},
 	];
 
-        const naverMapLink =
-                'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
-        const naverClientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '';
+	const naverMapLink =
+		'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
+	const naverClientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '';
 
 	const weddingDate = new Date('2026-03-02T12:30:00');
 
@@ -268,15 +268,15 @@ export default function Home() {
 						오시는 길
 					</h2>
 
-                                        <NaverMap
-                                                clientId={naverClientId}
-                                                address='서울 서초구 반포대로 235'
-                                                placeName='아펠가모 반포'
-                                                mapLink={naverMapLink}
-                                        />
+					<NaverMap
+						clientId={naverClientId}
+						address='서울 서초구 반포대로 235'
+						placeName='아펠가모 반포'
+						mapLink={naverMapLink}
+					/>
 
-                                        <div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
-                                                <div>
+					<div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
+						<div>
 							<p className='font-medium text-gray-800 mb-2 flex items-center gap-2'>
 								🚇 대중교통
 							</p>
