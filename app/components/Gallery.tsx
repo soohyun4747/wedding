@@ -85,12 +85,12 @@ export default function Gallery() {
               ✕
             </button>
             <div className="bg-white rounded-2xl overflow-hidden relative">
-              <div className="relative aspect-square">
+              <div className="relative h-[70vh] max-h-[80vh] w-full">
                 <Image
                   src={photos[selectedIndex].src}
                   alt={photos[selectedIndex].caption}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   sizes="(max-width: 768px) 100vw, 700px"
                 />
               </div>
