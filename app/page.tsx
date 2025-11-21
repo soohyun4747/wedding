@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import Gallery from '@/app/components/Gallery';
 import NaverMap from '@/app/components/NaverMap';
@@ -32,12 +32,54 @@ const accounts = [
 	},
 ];
 
-export default function Home() {
-	const [showContent, setShowContent] = useState(false);
-	const [daysLeft, setDaysLeft] = useState(0);
-	const [isPlaying, setIsPlaying] = useState(true);
+interface ScheduleItem {
+        time: string;
+        description: string;
+}
 
-	const audioRef = useRef<HTMLAudioElement | null>(null);
+const LeafFall = () => {
+        const leaves = useMemo(
+                () =>
+                        Array.from({ length: 20 }, (_, index) => ({
+                                id: index,
+                                left: Math.random() * 100,
+                                delay: Math.random() * 5,
+                                duration: 10 + Math.random() * 10,
+                                size: 16 + Math.random() * 12,
+                        })),
+                []
+        );
+
+        return (
+                <div className='pointer-events-none fixed inset-0 z-0 overflow-hidden'>
+                        {leaves.map((leaf) => (
+                                <span
+                                        key={leaf.id}
+                                        className='leaf'
+                                        style={{
+                                                left: `${leaf.left}%`,
+                                                animationDuration: `${leaf.duration}s`,
+                                                animationDelay: `${leaf.delay}s`,
+                                                fontSize: `${leaf.size}px`,
+                                        }}
+                                >
+                                        🍃
+                                </span>
+                        ))}
+                </div>
+        );
+};
+
+export default function Home() {
+        const [showContent, setShowContent] = useState(false);
+        const [daysLeft, setDaysLeft] = useState(0);
+        const [isPlaying, setIsPlaying] = useState(true);
+        const [schedules, setSchedules] = useState<ScheduleItem[]>([
+                { time: '12:00', description: '하객 맞이 및 안내' },
+                { time: '12:30', description: '본식 시작' },
+        ]);
+
+        const audioRef = useRef<HTMLAudioElement | null>(null);
 
 	// 🔊 배경 음악 준비 (public/music/wedding-song.mp3 기준)
 	useEffect(() => {
@@ -75,7 +117,24 @@ export default function Home() {
 		'https://map.naver.com/p/search/%EC%95%84%ED%8E%A0%EA%B0%80%EB%AA%A8%20%EB%B0%98%ED%8F%AC';
 	const naverClientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '';
 
-	const weddingDate = new Date('2026-03-02T12:30:00');
+        const weddingDate = new Date('2026-03-02T12:30:00');
+
+        const calendar = useMemo(() => {
+                const year = weddingDate.getFullYear();
+                const month = weddingDate.getMonth();
+                const startDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const cells = Array.from({ length: startDay }, () => null).concat(
+                        Array.from({ length: daysInMonth }, (_, index) => index + 1)
+                );
+                while (cells.length % 7 !== 0) {
+                        cells.push(null);
+                }
+                return {
+                        label: `${year}년 ${month + 1}월`,
+                        cells,
+                };
+        }, [weddingDate]);
 
 	useEffect(() => {
 		setTimeout(() => setShowContent(true), 100);
@@ -107,21 +166,32 @@ export default function Home() {
 		}
 	};
 
-	const handleCopy = async (number: string) => {
-		try {
-			await navigator.clipboard.writeText(number);
-			alert('계좌번호가 복사되었습니다.');
-		} catch (err) {
-			console.error('Copy failed', err);
-			alert('복사에 실패했어요. 다시 시도해주세요.');
-		}
-	};
+        const handleCopy = async (number: string) => {
+                try {
+                        await navigator.clipboard.writeText(number);
+                        alert('계좌번호가 복사되었습니다.');
+                } catch (err) {
+                        console.error('Copy failed', err);
+                        alert('복사에 실패했어요. 다시 시도해주세요.');
+                }
+        };
 
-	return (
-		<div className='min-h-screen bg-gray-50'>
-			{/* 커버 이미지 */}
-			<div className='relative h-screen flex justify-center overflow-hidden pb-16'>
-				<Image
+        const handleAddSchedule = () => {
+                const time = prompt('일정 시간을 입력해주세요 (예: 12:30)');
+                if (!time) return;
+                const description = prompt('일정 내용을 입력해주세요.');
+                if (!description) return;
+
+                setSchedules((prev) => [...prev, { time, description }]);
+        };
+
+        return (
+                <div className='min-h-screen bg-gray-50 relative overflow-hidden'>
+                        <LeafFall />
+                        <div className='relative z-10'>
+                        {/* 커버 이미지 */}
+                        <div className='relative h-screen flex justify-center overflow-hidden pb-16'>
+                                <Image
 					src='/images/IMG_3485.jpg'
 					alt='Wedding Cover'
 					fill
@@ -172,43 +242,115 @@ export default function Home() {
 				</div>
 			</div>
 
-			{/* D-Day */}
-			<div className='px-6 py-12 bg-gray-50'>
-				<div className='max-w-md mx-auto bg-white rounded-2xl shadow-md p-8 text-center'>
-					<p className='text-gray-600 mb-3 text-sm'>
-						우리의 결혼식이
-					</p>
-					<div className='text-5xl font-bold text-gray-800 mb-2'>
-						D-{daysLeft}
-					</div>
-					<p className='text-gray-500 text-sm'>남았습니다</p>
-				</div>
-			</div>
+                        {/* D-Day */}
+                        <div className='px-6 py-12 bg-gray-50'>
+                                <div className='max-w-md mx-auto space-y-6'>
+                                        <div className='bg-white rounded-2xl shadow-md p-8 text-center'>
+                                                <p className='text-sm text-gray-500 mb-4'>
+                                                        {calendar.label}
+                                                </p>
+                                                <div className='grid grid-cols-7 gap-2 text-xs text-gray-500 mb-2'>
+                                                        {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
+                                                                <div key={day}>{day}</div>
+                                                        ))}
+                                                </div>
+                                                <div className='grid grid-cols-7 gap-2 text-sm'>
+                                                        {calendar.cells.map((cell, index) => {
+                                                                const isWeddingDay = cell === weddingDate.getDate();
+                                                                return (
+                                                                        <div
+                                                                                key={`${cell}-${index}`}
+                                                                                className={`h-10 flex items-center justify-center rounded-lg ${
+                                                                                        isWeddingDay
+                                                                                                ? 'bg-rose-100 text-rose-700 font-semibold'
+                                                                                                : cell
+                                                                                                ? 'bg-gray-50 text-gray-700'
+                                                                                                : ''
+                                                                                }`}
+                                                                        >
+                                                                                {cell}
+                                                                        </div>
+                                                                );
+                                                        })}
+                                                </div>
+                                        </div>
+                                        <div className='bg-white rounded-2xl shadow-md p-8 text-center'>
+                                                <p className='text-gray-600 mb-3 text-sm'>
+                                                        우리의 결혼식이
+                                                </p>
+                                                <div className='text-5xl font-bold text-gray-800 mb-2'>
+                                                        D-{daysLeft}
+                                                </div>
+                                                <p className='text-gray-500 text-sm'>남았습니다</p>
+                                        </div>
+                                        <div className='bg-white rounded-2xl shadow-md p-6'>
+                                                <div className='flex items-center justify-between mb-4'>
+                                                        <div>
+                                                                <p className='text-sm text-gray-500'>예식 일정</p>
+                                                                <p className='text-lg font-semibold text-gray-800'>
+                                                                        Wedding Schedule
+                                                                </p>
+                                                        </div>
+                                                        <button
+                                                                onClick={handleAddSchedule}
+                                                                className='text-sm text-white bg-rose-500 px-4 py-2 rounded-lg hover:bg-rose-600 transition-colors'
+                                                        >
+                                                                일정 추가
+                                                        </button>
+                                                </div>
+                                                <div className='space-y-3'>
+                                                        {schedules.map((item, index) => (
+                                                                <div
+                                                                        key={`${item.time}-${index}`}
+                                                                        className='flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3'
+                                                                >
+                                                                        <div>
+                                                                                <p className='text-xs text-gray-500'>{item.time}</p>
+                                                                                <p className='text-sm font-medium text-gray-800'>
+                                                                                        {item.description}
+                                                                                </p>
+                                                                        </div>
+                                                                </div>
+                                                        ))}
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
 
-			{/* 신랑 신부 소개 */}
-			<div className='px-6 py-16 bg-white'>
-				<div className='max-w-md mx-auto'>
-					<div className='grid grid-cols-2 gap-6 text-center'>
-						<div>
-							<div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl'>
-								🤵
-							</div>
-							<p className='text-sm text-gray-500 mb-1'>GROOM</p>
-							<p className='text-xl font-medium text-gray-800 mb-3'>
-								최광은
-							</p>
+                        {/* 신랑 신부 소개 */}
+                        <div className='px-6 py-16 bg-white'>
+                                <div className='max-w-md mx-auto'>
+                                        <div className='grid grid-cols-2 gap-6 text-center'>
+                                                <div>
+                                                        <div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 overflow-hidden relative'>
+                                                                <Image
+                                                                        src='/images/IMG_3477.jpg'
+                                                                        alt='Groom'
+                                                                        fill
+                                                                        className='object-cover'
+                                                                />
+                                                        </div>
+                                                        <p className='text-sm text-gray-500 mb-1'>GROOM</p>
+                                                        <p className='text-xl font-medium text-gray-800 mb-3'>
+                                                                최광은
+                                                        </p>
 							<div className='text-xs text-gray-600 space-y-1'>
 								<p>최명섭 · 김은실의 장남</p>
 							</div>
-						</div>
+                                                </div>
 
-						<div>
-							<div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl'>
-								👰
-							</div>
-							<p className='text-sm text-gray-500 mb-1'>BRIDE</p>
-							<p className='text-xl font-medium text-gray-800 mb-3'>
-								정수현
+                                                <div>
+                                                        <div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 overflow-hidden relative'>
+                                                                <Image
+                                                                        src='/images/IMG_3487.jpg'
+                                                                        alt='Bride'
+                                                                        fill
+                                                                        className='object-cover'
+                                                                />
+                                                        </div>
+                                                        <p className='text-sm text-gray-500 mb-1'>BRIDE</p>
+                                                        <p className='text-xl font-medium text-gray-800 mb-3'>
+                                                                정수현
 							</p>
 							<div className='text-xs text-gray-600 space-y-1'>
 								<p>정외영 · 송미연의 장녀</p>
@@ -326,11 +468,11 @@ export default function Home() {
 						mapLink={naverMapLink}
 					/>
 
-					<div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
-						<div>
-							<p className='font-medium text-gray-800 mb-2 flex items-center gap-2'>
-								🚇 대중교통
-							</p>
+                                        <div className='bg-white rounded-2xl shadow-sm p-6 space-y-5'>
+                                                <div>
+                                                        <p className='font-medium text-gray-800 mb-2 flex items-center gap-2'>
+                                                                🚇 대중교통
+                                                        </p>
 							<p className='text-sm text-gray-600 leading-relaxed'>
 								고속터미널역 5번 출구에서 약 도보 5분
 							</p>
@@ -347,13 +489,16 @@ export default function Home() {
 							<p className='font-medium text-gray-800 mb-2 flex items-center gap-2'>
 								🚗 주차
 							</p>
-							<p className='text-sm text-gray-600 leading-relaxed'>
-								건물 지하 무료주차 (예식 당일 2시간 무료)
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+                                                        <p className='text-sm text-gray-600 leading-relaxed'>
+                                                                건물 지하 무료주차 (예식 당일 2시간 무료)
+                                                        </p>
+                                                </div>
+                                                <p className='text-sm text-gray-600 leading-relaxed text-center'>
+                                                        화환은 반입이 안되오니 참고해주시면 감사하겠습니다.
+                                                </p>
+                                        </div>
+                                </div>
+                        </div>
 
 			{/* 푸터 */}
 			<div className='px-6 py-16 bg-gray-800 text-white text-center'>
@@ -368,20 +513,21 @@ export default function Home() {
 			</div>
 
 			{/* 플로팅 버튼 */}
-			<div className='fixed bottom-6 right-6 z-50 flex flex-col gap-3'>
-				<button
-					onClick={handleToggleMusic}
-					className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
+                        <div className='fixed bottom-6 right-6 z-50 flex flex-col gap-3'>
+                                <button
+                                        onClick={handleToggleMusic}
+                                        className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
 					{isPlaying ? '🔇' : '🎵'}
 				</button>
 				<button
 					onClick={() =>
 						window.scrollTo({ top: 0, behavior: 'smooth' })
 					}
-					className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
-					⬆️
-				</button>
-			</div>
-		</div>
-	);
+                                        className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
+                                        ⬆️
+                                </button>
+                        </div>
+                        </div>
+                </div>
+        );
 }
