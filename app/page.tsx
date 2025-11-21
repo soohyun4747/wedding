@@ -284,7 +284,7 @@ export default function Home() {
 							<div>
 								<div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 overflow-hidden relative'>
 									<Image
-										src='/images/IMG_3477.jpg'
+										src='/images/groom.jpg'
 										alt='Groom'
 										fill
 										className='object-cover'
@@ -304,7 +304,7 @@ export default function Home() {
 							<div>
 								<div className='w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 overflow-hidden relative'>
 									<Image
-										src='/images/IMG_3487.jpg'
+										src='/images/bride.jpg'
 										alt='Bride'
 										fill
 										className='object-cover'
