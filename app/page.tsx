@@ -9,13 +9,13 @@ const accounts = [
 	{
 		role: '신랑 혼주',
 		name: '최명섭',
-		bank: '농협',
+		bank: '국민은행',
 		number: '743802-01-000416',
 	},
 	{
 		role: '신랑',
 		name: '최광은',
-		bank: '우리은행',
+		bank: '국민은행',
 		number: '940302-00-470325',
 	},
 	{
