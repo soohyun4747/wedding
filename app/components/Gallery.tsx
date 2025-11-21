@@ -78,13 +78,13 @@ export default function Gallery() {
               setTouchStartX(null);
             }}
           >
-            <button
+            {/* <button
               onClick={() => setSelectedIndex(null)}
-              className="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300"
+              className="absolute top-[12px] right-0 text-white text-3xl hover:text-gray-300"
             >
               ✕
-            </button>
-            <div className="bg-white rounded-2xl overflow-hidden relative">
+            </button> */}
+            <div className="bg-transparent rounded-2xl overflow-hidden relative">
               <div className="relative h-[70vh] max-h-[80vh] w-full">
                 <Image
                   src={photos[selectedIndex].src}

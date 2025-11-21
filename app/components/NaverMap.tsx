@@ -134,7 +134,7 @@ export default function NaverMap({
 			/>
 			<button
 				onClick={() => window.open(mapLink, '_blank')}
-				className='w-full py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-700 transition-colors'>
+				className='w-full py-3 bg-[#ff758d] text-white rounded-xl hover:bg-gray-700 transition-colors'>
 				네이버 지도에서 길찾기
 			</button>
 		</div>
