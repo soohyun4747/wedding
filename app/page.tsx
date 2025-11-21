@@ -119,9 +119,10 @@ export default function Home() {
 		const month = weddingDate.getMonth();
 		const startDay = new Date(year, month, 1).getDay();
 		const daysInMonth = new Date(year, month + 1, 0).getDate();
-		const cells = Array.from({ length: startDay }, () => null).concat(
-			Array.from({ length: daysInMonth }, (_, index) => index + 1)
-		);
+		const cells: (number | null)[] = [
+			...Array.from({ length: startDay }, () => null),
+			...Array.from({ length: daysInMonth }, (_, index) => index + 1),
+		];
 		while (cells.length % 7 !== 0) {
 			cells.push(null);
 		}
@@ -195,8 +196,7 @@ export default function Home() {
 						</p>
 						<div className='space-y-2'>
 							<h1 className='text-4xl font-serif text-white drop-shadow-lg'>
-								광은{' '}
-								<span className='text-transparent'>a</span>{' '}
+								광은 <span className='text-transparent'>a</span>{' '}
 								수현
 							</h1>
 						</div>
