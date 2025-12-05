@@ -176,7 +176,7 @@ export default function Home() {
 		<div className='min-h-screen bg-gray-50 relative overflow-hidden'>
 			<div className='relative z-10'>
 				{/* 커버 이미지 */}
-				<div className='relative h-screen flex justify-center overflow-hidden pb-16'>
+				<div className='relative w-full h-screen flex justify-center overflow-hidden pb-16'>
 					<Image
 						src='/images/IMG_3485.jpg'
 						alt='Wedding Cover'
@@ -184,7 +184,8 @@ export default function Home() {
 						className='object-cover'
 						priority
 					/>
-					<div className='absolute inset-0 bg-black bg-opacity-20'></div>
+					<div className='absolute inset-0 bg-black bg-opacity-20' />
+
 					<div
 						className={`relative z-10 text-center transition-all duration-1000 ${
 							showContent
@@ -208,17 +209,21 @@ export default function Home() {
 								PM 12:30
 							</p>
 						</div>
-                                                <div className='mt-12'>
-                                                        <div className='flex flex-col items-center gap-2 text-white animate-bounce'>
-                                                                <span className='text-sm tracking-[0.2em]'>SCROLL</span>
-                                                                <div className='w-8 h-8 rounded-full border border-white flex items-center justify-center'>
-                                                                        ↓
-                                                                </div>
-                                                        </div>
-                                                </div>
+						<div className='mt-12'>
+							<div className='w-px h-12 bg-white mx-auto animate-bounce opacity-70'></div>
+						</div>
+					</div>
+
+					{/* SCROLL 인디케이터 */}
+					<div
+						className='absolute bottom-[60px]
+                    flex flex-col items-center gap-2 text-white animate-bounce'>
+						<span className='text-sm tracking-[0.2em]'>SCROLL</span>
+						<div className='w-8 h-8 rounded-full border border-white flex items-center justify-center'>
+							↓
+						</div>
 					</div>
 				</div>
-
 				{/* 초대 메시지 */}
 				<div className='px-6 py-16 bg-white'>
 					<div className='max-w-md mx-auto text-center'>
@@ -492,13 +497,6 @@ export default function Home() {
 						onClick={handleToggleMusic}
 						className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
 						{isPlaying ? '🔇' : '🎵'}
-					</button>
-					<button
-						onClick={() =>
-							window.scrollTo({ top: 0, behavior: 'smooth' })
-						}
-						className='w-14 h-14 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform'>
-						⬆️
 					</button>
 				</div>
 			</div>
