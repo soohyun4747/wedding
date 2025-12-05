@@ -78,12 +78,13 @@ export default function Gallery() {
               setTouchStartX(null);
             }}
           >
-            {/* <button
+            <button
               onClick={() => setSelectedIndex(null)}
-              className="absolute top-[12px] right-0 text-white text-3xl hover:text-gray-300"
+              className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 bg-black/50 rounded-full px-3 py-1"
+              aria-label="Close gallery"
             >
               ✕
-            </button> */}
+            </button>
             <div className="bg-transparent rounded-2xl overflow-hidden relative">
               <div className="relative h-[70vh] max-h-[80vh] w-full">
                 <Image
