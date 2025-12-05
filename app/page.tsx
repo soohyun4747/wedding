@@ -208,9 +208,14 @@ export default function Home() {
 								PM 12:30
 							</p>
 						</div>
-						<div className='mt-12'>
-							<div className='w-px h-12 bg-white mx-auto animate-bounce opacity-70'></div>
-						</div>
+                                                <div className='mt-12'>
+                                                        <div className='flex flex-col items-center gap-2 text-white animate-bounce'>
+                                                                <span className='text-sm tracking-[0.2em]'>SCROLL</span>
+                                                                <div className='w-8 h-8 rounded-full border border-white flex items-center justify-center'>
+                                                                        ↓
+                                                                </div>
+                                                        </div>
+                                                </div>
 					</div>
 				</div>
 
