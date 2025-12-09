@@ -418,8 +418,8 @@ export default function Home() {
 						</div>
 					</div>
 					<div className='bg-gray-800 text-white flex flex-col items-center justify-center rounded-[8px] p-[16px] py-[8px]'>
-						<p className='text-xs font-bold text-white text-center'>
-							🏵️ 화환은 반입이 안되오니 참고해주시면 감사하겠습니다 🏵️
+						<p className='text-sm text-white text-center'>
+							화환은 반입이 안되오니 참고해주시면 감사하겠습니다
 						</p>
 					</div>
 				</div>
