@@ -382,8 +382,8 @@ export default function Home() {
 				</div>
 
 				{/* 마음 전하실 곳 */}
-				<div className='px-6 py-16 bg-white'>
-					<div className='max-w-md mx-auto'>
+				<div className='px-6 py-16 bg-white flex flex-col gap-4'>
+					<div className='max-w-md'>
 						<h2 className='text-2xl font-serif text-center mb-4 text-gray-800'>
 							마음 전하실 곳
 						</h2>
@@ -416,6 +416,11 @@ export default function Home() {
 								</div>
 							))}
 						</div>
+					</div>
+					<div className='bg-gray-800 text-white flex flex-col items-center justify-center rounded-[8px] p-[16px] py-[8px]'>
+						<p className='text-xs font-bold text-white text-center'>
+							🏵️ 화환은 반입이 안되오니 참고해주시면 감사하겠습니다 🏵️
+						</p>
 					</div>
 				</div>
 
@@ -475,10 +480,6 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-
-				<p className='text-sm text-gray-600 leading-relaxed text-center pb-[36px]'>
-					* 화환은 반입이 안되오니 참고해주시면 감사하겠습니다.
-				</p>
 
 				{/* 푸터 */}
 				<div className='px-6 py-16 bg-gray-800 text-white text-center'>
